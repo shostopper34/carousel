@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="CarouselFooterView" id="U6b-Vx-4bR" customClass="CarouselFooterView" customModule="carousel" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="xzt-25-Ykw">
+                    <rect key="frame" x="99" y="11" width="122" height="28"/>
+                </pageControl>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstItem="xzt-25-Ykw" firstAttribute="centerX" secondItem="U6b-Vx-4bR" secondAttribute="centerX" id="NDE-hy-QuA"/>
+                <constraint firstItem="xzt-25-Ykw" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="YiY-Uv-cMS"/>
+            </constraints>
+            <connections>
+                <outlet property="pageControl" destination="xzt-25-Ykw" id="ifk-6t-Xv9"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="123"/>
+        </collectionReusableView>
+    </objects>
+</document>

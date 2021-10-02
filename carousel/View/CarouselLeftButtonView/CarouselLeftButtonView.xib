@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="CarouselLeftButtonView" id="U6b-Vx-4bR" customClass="CarouselLeftButtonView" customModule="carousel" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aF-jp-O8u">
+                    <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+                    <state key="normal" image="chevron.left" catalog="system"/>
+                    <connections>
+                        <action selector="tapPrev:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="5K9-Fo-tUA"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstItem="9aF-jp-O8u" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="Exy-NC-pSQ"/>
+                <constraint firstAttribute="bottom" secondItem="9aF-jp-O8u" secondAttribute="bottom" id="IRS-A5-Yw0"/>
+                <constraint firstItem="9aF-jp-O8u" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="NZl-R6-St7"/>
+                <constraint firstAttribute="trailing" secondItem="9aF-jp-O8u" secondAttribute="trailing" id="yqd-lS-oM4"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="88"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="chevron.left" catalog="system" width="96" height="128"/>
+    </resources>
+</document>
