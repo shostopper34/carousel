@@ -16,9 +16,6 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9aF-jp-O8u">
                     <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
                     <state key="normal" image="chevron.left" catalog="system"/>
-                    <connections>
-                        <action selector="tapPrev:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="5K9-Fo-tUA"/>
-                    </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
@@ -28,6 +25,9 @@
                 <constraint firstItem="9aF-jp-O8u" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="NZl-R6-St7"/>
                 <constraint firstAttribute="trailing" secondItem="9aF-jp-O8u" secondAttribute="trailing" id="yqd-lS-oM4"/>
             </constraints>
+            <connections>
+                <outlet property="prevButton" destination="9aF-jp-O8u" id="2o8-3i-cOt"/>
+            </connections>
             <point key="canvasLocation" x="139" y="88"/>
         </collectionReusableView>
     </objects>

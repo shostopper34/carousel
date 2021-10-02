@@ -16,4 +16,8 @@ class CarouselFooterView: UICollectionReusableView {
         // Initialization code
     }
     
+    func set(currentIndex: Int, count: Int) {
+        pageControl.numberOfPages = count
+        pageControl.currentPage = currentIndex
+    }
 }

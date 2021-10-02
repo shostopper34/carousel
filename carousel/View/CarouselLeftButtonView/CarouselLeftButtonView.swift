@@ -6,15 +6,26 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class CarouselLeftButtonView: UICollectionReusableView {
 
+    @IBOutlet weak var prevButton: UIButton!
+    
+    var tapPrev: Observable<Void> {
+        return prevButton.rx.tap.asObservable()
+    }
+    
+    private(set) var disposeBag: DisposeBag! = DisposeBag()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    @IBAction func tapPrev(_ sender: Any) {
-        print("tap prev")
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
     }
 }

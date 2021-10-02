@@ -16,9 +16,6 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wus-Yu-uvh">
                     <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
                     <state key="normal" image="chevron.right" catalog="system"/>
-                    <connections>
-                        <action selector="tapNext:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="aOb-JD-GGK"/>
-                    </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
@@ -28,7 +25,10 @@
                 <constraint firstAttribute="trailing" secondItem="wus-Yu-uvh" secondAttribute="trailing" id="bcu-RZ-jEC"/>
                 <constraint firstItem="wus-Yu-uvh" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="pQe-ki-pGX"/>
             </constraints>
-            <point key="canvasLocation" x="-20" y="88"/>
+            <connections>
+                <outlet property="nextButton" destination="wus-Yu-uvh" id="6zm-n6-KYV"/>
+            </connections>
+            <point key="canvasLocation" x="-20.289855072463769" y="87.723214285714278"/>
         </collectionReusableView>
     </objects>
     <resources>

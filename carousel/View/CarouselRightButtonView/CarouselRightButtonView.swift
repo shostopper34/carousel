@@ -6,15 +6,26 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class CarouselRightButtonView: UICollectionReusableView {
 
+    @IBOutlet weak var nextButton: UIButton!
+    
+    var tapNext: Observable<Void> {
+        return nextButton.rx.tap.asObservable()
+    }
+    
+    private(set) var disposeBag: DisposeBag! = DisposeBag()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    @IBAction func tapNext(_ sender: Any) {
-        print("tap next")
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
     }
 }

@@ -8,6 +8,7 @@
 import UIKit
 
 enum Section: Int, CaseIterable {
+    case top
     case carousel
     case normal
 }
@@ -22,15 +23,20 @@ class ViewController: UIViewController {
     private var snapshot: Snapshot!
     private var dataSource: DataSource!
     
+    private var carouselCount: Int = 0
+    private var currentPage: Int = 0
     static let prevElementKind = "prev-element-kind"
     static let nextElementKind = "next-element-kind"
     
+    private let top: [String] = ["top1", "top2", "top3", "top4", "top5"]
     private let carousels: [String] = ["carousel1", "carousel2", "carousel3", "carousel4", "carousel5"]
     private let items: [String] = ["item1", "item2", "item3", "item4", "item5"]
     private lazy var compositionalLayout: UICollectionViewCompositionalLayout = {
         let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex, env) -> NSCollectionLayoutSection? in
             guard let self = self else { return nil }
             switch sectionIndex {
+            case Section.top.rawValue:
+                return self.createTopSection()
             case Section.carousel.rawValue:
                 return self.createCarouselSection()
             case Section.normal.rawValue:
@@ -48,6 +54,8 @@ class ViewController: UIViewController {
     }
     
     private func setupCollectionView() {
+        carouselCount = carousels.count
+        collectionView.registerCustomCell(TopViewCell.self)
         collectionView.registerCustomCell(CarouselViewCell.self)
         collectionView.registerCustomCell(NormalViewCell.self)
         collectionView.registerCustomReusableFooterView(CarouselFooterView.self)
@@ -57,6 +65,10 @@ class ViewController: UIViewController {
         
         dataSource = DataSource(collectionView: collectionView, cellProvider: { (collectionView: UICollectionView, indexPath: IndexPath, element: String) -> UICollectionViewCell? in
             switch indexPath.section {
+            case Section.top.rawValue:
+                let cell = collectionView.dequeueReusableCustomCell(with: TopViewCell.self, indexPath: indexPath)
+                cell.set(title: element)
+                return cell
             case Section.carousel.rawValue:
                 let cell = collectionView.dequeueReusableCustomCell(with: CarouselViewCell.self, indexPath: indexPath)
                 cell.set(title: element)
@@ -74,14 +86,29 @@ class ViewController: UIViewController {
             case Section.carousel.rawValue:
                 if kind == UICollectionView.elementKindSectionFooter {
                     let footer = collectionView.dequeueReusableCustomFooterView(with: CarouselFooterView.self, indexPath: indexPath)
+                    footer.set(currentIndex: self.currentPage, count: self.carouselCount)
                     return footer
                 }
                 if kind == ViewController.prevElementKind {
                     let prev = collectionView.dequeueReusableCustomView(with: CarouselLeftButtonView.self, indexPath: indexPath, kind: kind)
+                    prev.tapPrev
+                        .subscribe(onNext: { [weak self] in
+                            guard let self = self else { return }
+                            let pos = self.currentPage - 1
+                            let position = (pos >= 0) ? pos : 0
+                            collectionView.scrollToItem(at: IndexPath(item: position, section: indexPath.section), at: .centeredHorizontally, animated: true)
+                        }).disposed(by: prev.disposeBag)
                     return prev
                 }
                 if kind == ViewController.nextElementKind {
                     let next = collectionView.dequeueReusableCustomView(with: CarouselRightButtonView.self, indexPath: indexPath, kind: kind)
+                    next.tapNext
+                        .subscribe(onNext: { [weak self] in
+                            guard let self = self else { return }
+                            let pos = self.currentPage + 1
+                            let position = (pos > self.carouselCount) ? self.carouselCount : pos
+                            collectionView.scrollToItem(at: IndexPath(item: position, section: indexPath.section), at: .centeredHorizontally, animated: true)
+                        }).disposed(by: next.disposeBag)
                     return next
                 }
             default:
@@ -89,12 +116,18 @@ class ViewController: UIViewController {
             }
             return nil
         }
-        dataSource.apply(snapshot(carousels: carousels, items: items))
+        dataSource.apply(snapshot(top: top, carousels: carousels, items: items))
     }
     
-    private func snapshot(carousels: [String] = [], items: [String] = []) -> Snapshot {
+    private func updateDataSource() {
+        let snapshot = dataSource.snapshot()
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    private func snapshot(top: [String] = [], carousels: [String] = [], items: [String] = []) -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections(Section.allCases)
+        snapshot.appendItems(top, toSection: .top)
         snapshot.appendItems(carousels, toSection: .carousel)
         snapshot.appendItems(items, toSection: .normal)
         return snapshot
@@ -111,7 +144,7 @@ class ViewController: UIViewController {
             leading: sideInset,
             bottom: 0,
             trailing: sideInset)
-        let groupWidth = collectionView.bounds.width * 0.86
+        let groupWidth = collectionView.bounds.width - 1
         let groupHeight = groupWidth * 179 / 323
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(groupWidth),
@@ -158,6 +191,30 @@ class ViewController: UIViewController {
             containerAnchor: nextAnchor)
         section.boundarySupplementaryItems = [prev, next, footer]
         section.orthogonalScrollingBehavior = .groupPaging
+        section.visibleItemsInvalidationHandler = { [weak self] items, point, env in
+            guard let self = self,
+                  let page = items.last?.indexPath.item else { return }
+            if self.currentPage != page {
+                self.currentPage = page
+                self.updateDataSource()
+            }
+        }
+        return section
+    }
+    
+    private func createTopSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let groupWidth = collectionView.bounds.width
+        let groupHeight = groupWidth * 45 / 375
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(groupWidth),
+            heightDimension: .absolute(groupHeight))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
         return section
     }
     
